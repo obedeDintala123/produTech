@@ -19,6 +19,7 @@ export const getBoards = () => {
       const { data } = await api.get("/boards");
       return data;
     },
+    refetchInterval: 1000,
   });
 };
 
@@ -41,6 +42,9 @@ export const getColumnsOfBoard = (id: string) => {
       const { data } = await api.get(`/columns?boardId=${id}`);
       return data;
     },
+    refetchInterval: 1000,
+    refetchOnWindowFocus: true,
+    staleTime: 2000,
   });
 };
 
@@ -77,8 +81,8 @@ export const getNotes = () => {
       const { data } = await api.get("/notes");
       return data;
     },
-    refetchInterval: 1000, 
-    refetchOnWindowFocus: true, 
-    staleTime: 2000, 
+    refetchInterval: 1000,
+    refetchOnWindowFocus: true,
+    staleTime: 2000,
   });
 };

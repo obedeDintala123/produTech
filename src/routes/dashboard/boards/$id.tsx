@@ -3,12 +3,10 @@ import { CardItem, ColumnWithCards } from "@/components/cards";
 import { Loading } from "@/components/loading";
 import { ShareBoardDialog } from "@/components/share-board";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   DndContext,
   DragOverlay,
   type DragEndEvent,
-  type DragOverEvent,
   type DragStartEvent,
 } from "@dnd-kit/core";
 import { arrayMove, SortableContext } from "@dnd-kit/sortable";
@@ -27,7 +25,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 import {
   getBoardById,
-  getCardsOfColumn,
   getColumnsOfBoard,
 } from "@/lib/requests";
 
@@ -46,20 +43,15 @@ function BoardDetailsComponent() {
   const router = useRouter();
   const { data: board, isLoading: isBoardLoading } = getBoardById(id);
   const { data: columns, isLoading: isColumnsLoading } = getColumnsOfBoard(id);
-  const { data: cards } = getCardsOfColumn();
 
   const [orderedColumns, setOrderedColumns] = useState<any[]>([]);
   const [activeColumn, setActiveColumn] = useState<ColumnType | null>(null);
   const [activeCard, setActiveCard] = useState<CardType | null>(null);
-  const [orderedCards, setOrderedCards] = useState<any[]>([]);
+  // const [orderedCards, setOrderedCards] = useState<any[]>([]);
 
   useEffect(() => {
     if (columns) setOrderedColumns(columns);
   }, [columns]);
-
-  useEffect(() => {
-    if (cards) setOrderedCards(cards);
-  }, [cards]);
 
   const columnsId = useMemo(
     () => columns?.map((column) => column.id) ?? [],
@@ -109,28 +101,28 @@ function BoardDetailsComponent() {
     }
   }
 
-  function onDragOver(event: DragOverEvent) {
-    const { active, over } = event;
+  // function onDragOver(event: DragOverEvent) {
+  //   const { active, over } = event;
 
-    if (!over) return;
+  //   if (!over) return;
 
-    const activeId = active.id;
-    const overId = over.id;
+  //   const activeId = active.id;
+  //   const overId = over.id;
 
-    if (activeId === overId) return;
+  //   if (activeId === overId) return;
 
-    const isActiveCard = active.data.current?.type === "Card";
-    const isOverCard = over.data.current?.type === "Card";
+  //   const isActiveCard = active.data.current?.type === "Card";
+  //   const isOverCard = over.data.current?.type === "Card";
 
-    if (isActiveCard && isOverCard) {
-      setOrderedCards((cards) => {
-        const activeIndex = cards.findIndex((t) => t.id === active.id);
-        const overIndex = cards.findIndex((t) => t.id === over.id);
+  //   if (isActiveCard && isOverCard) {
+  //     setOrderedCards((cards) => {
+  //       const activeIndex = cards.findIndex((t) => t.id === active.id);
+  //       const overIndex = cards.findIndex((t) => t.id === over.id);
 
-        return arrayMove(cards, activeIndex, overIndex);
-      });
-    }
-  }
+  //       return arrayMove(cards, activeIndex, overIndex);
+  //     });
+  //   }
+  // }
 
   function onDragCancel() {
   setActiveColumn(null);

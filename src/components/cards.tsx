@@ -4,13 +4,12 @@ import { Button } from "./ui/button";
 import {
   Edit,
   GripHorizontal,
-  MoreHorizontalIcon,
   PenBox,
   Plus,
   Trash,
 } from "lucide-react";
 import { Skeleton } from "./ui/skeleton";
-import { useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { Checkbox } from "./ui/checkbox";
 import {
   Dialog,
@@ -62,7 +61,7 @@ export const ViewBoardCard = ({
   onClick,
   onDelete,
 }: {
-  background: string;
+  background: string | undefined;
   title: string;
   onClick?: () => void;
   onDelete?: () => void;
@@ -163,6 +162,28 @@ export function ColumnWithCards({ column }: { column: any }) {
     },
   });
 
+  async function onDeleteColumn(columnId: number) {
+    try {
+      const { data: cards } = await api.get(`/cards?columnId=${columnId}`);
+
+      await Promise.all(
+        cards.map((card: any) => api.delete(`/cards/${card.id}`))
+      );
+
+      await api.delete(`/columns/${columnId}`);
+
+      toast.success("Coluna eliminada com sucesso!");
+    } catch (error) {
+      toast.error("Erro ao apagar a coluna!");
+      console.error(error);
+    }
+  }
+
+  const onDelete = (e: React.SyntheticEvent) => {
+    e.stopPropagation();
+    onDeleteColumn(column.id);
+  };
+
   const onSubmit = (data: CardSchema) => {
     addCard.mutate(data);
     reset();
@@ -249,9 +270,33 @@ export function ColumnWithCards({ column }: { column: any }) {
             <span className="font-semibold cursor-text">{title}</span>
           )}
         </CardTitle>
-        <Button className="bg-transparent hover:bg-transparent text-produ-text">
-          <MoreHorizontalIcon />
-        </Button>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
+            <button className="p-1 rounded-md bg-transparent hover:bg-transparent">
+              <MoreHorizontal className="h-4 w-4 text-produ-text" />
+            </button>
+          </DropdownMenuTrigger>
+
+          <DropdownMenuContent align="end" sideOffset={4}>
+            <DropdownMenuItem
+              onClick={(e) => {
+                e.stopPropagation();
+                console.log("Editar quadro:", title);
+              }}
+            >
+              <Edit />
+              Editar
+            </DropdownMenuItem>
+
+            <DropdownMenuItem
+              onClick={onDelete}
+              className="text-red-500 focus:text-red-600"
+            >
+              <Trash className="text-red-500 focus:text-red-600" />
+              Eliminar
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </CardHeader>
 
       <CardContent className="space-y-2">
@@ -345,7 +390,7 @@ export function CardItem({ card }: { card: any }) {
   async function handleBlur() {
     setIsEditing(false);
 
-    if (card.title === card.title) return;
+    if (title === card.title) return;
 
     try {
       setIsSaving(true);

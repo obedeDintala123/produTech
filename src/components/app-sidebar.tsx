@@ -1,13 +1,7 @@
 "use client";
 
 import * as React from "react";
-import {
-  Home,
-  NotepadText,
-  PanelsRightBottom,
-  PanelsTopLeft,
-  SquareTerminal,
-} from "lucide-react";
+import { Home, NotepadText, PanelsTopLeft } from "lucide-react";
 
 import {
   Sidebar,
@@ -48,7 +42,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
                 return (
                   <SidebarMenuItem key={item.name}>
-                    <SidebarMenuButton className={`hover:bg-produ-secondary dark:text-white hover:text-white text-white ${isActive ? "bg-produ-secondary" : "text-black"}`} asChild>
+                    <SidebarMenuButton
+                      className={`hover:bg-produ-secondary dark:text-white hover:text-white text-white ${isActive ? "bg-produ-secondary" : "text-black"}`}
+                      asChild
+                    >
                       <Link
                         to={item.url}
                         className={`flex items-center gap-2 rounded-md px-3 py-2 transition-colors duration-200`}

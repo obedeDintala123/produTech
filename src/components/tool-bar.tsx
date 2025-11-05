@@ -22,6 +22,7 @@ import { useRouter } from "@tanstack/react-router";
 import { Separator } from "./ui/separator";
 import React from "react";
 import { cn } from "@/lib/utils";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 type ToolbarType = {
   editor: any;
@@ -32,7 +33,7 @@ export const ToolBar = ({ editor, className }: ToolbarType) => {
   if (!editor) return null;
 
   const router = useRouter();
-
+  const isMobile = useIsMobile();
 
   const Options = [
     {
@@ -134,14 +135,41 @@ export const ToolBar = ({ editor, className }: ToolbarType) => {
     },
   ];
 
+  if (isMobile) {
+    return (
+      <div className="p-4 place-items-center">
+        <div className="flex items-center h-4 flex-wrap">
+          {Options.map((option, i) => (
+            <React.Fragment key={i}>
+              <Toggle
+                size="sm"
+                pressed={option.pressed}
+                onPressedChange={option.onClick}
+              >
+                {option.icon}
+              </Toggle>
+              {option.isSepareted && <Separator orientation="vertical" />}
+            </React.Fragment>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className={cn("flex items-center justify-between", className)}>
+    <div
+      className={cn(
+        "flex items-center justify-between mb-1 bg-slate-50 dark:bg-background sticky top-0 p-4 w-full",
+        className
+      )}
+    >
       <Button
         onClick={() => router.navigate({ to: "/dashboard/notes" })}
         className="w-10 h-10 rounded-md bg-gray-100 hover:bg-gray-100 dark:bg-[#1F1F21]"
       >
         <ArrowLeft className="text-produ-text" />
       </Button>
+
       <div className="flex items-center gap-1 h-4">
         {Options.map((option, i) => (
           <React.Fragment key={i}>
@@ -152,7 +180,6 @@ export const ToolBar = ({ editor, className }: ToolbarType) => {
             >
               {option.icon}
             </Toggle>
-
             {option.isSepareted && <Separator orientation="vertical" />}
           </React.Fragment>
         ))}

@@ -72,6 +72,7 @@ function BoardComponent() {
               }
               background={board.background}
               title={board.title}
+             onDelete={() => deleteBoard.mutate(board.id)}
             />
           ))}
         </div>

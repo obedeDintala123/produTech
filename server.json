@@ -1,65 +1,26 @@
 {
   "boards": [
     {
-      "id": "5177",
-      "title": "titulo",
+      "id": "f6c6",
+      "title": "Titulo",
       "visibility": "public",
-      "background": "https://picsum.photos/id/17/2500/1667",
-      "createdAt": "2025-11-04T23:14:43.577Z",
+      "background": "#333c4b",
+      "createdAt": "2025-11-05T18:32:08.091Z",
       "column": []
     }
   ],
-  "columns": [
-    {
-      "id": "ca8c",
-      "boardId": "5177",
-      "title": "Titulo ",
-      "description": "imimo"
-    },
-    {
-      "id": "8f01",
-      "boardId": "5177",
-      "title": "jdjjf",
-      "description": "kkkd"
-    },
-    {
-      "id": "3a17",
-      "boardId": "5177",
-      "title": "Port",
-      "description": "kkld"
-    }
-  ],
-  "cards": [
-    {
-      "id": "cdd6",
-      "columnId": "ca8c",
-      "title": "45678",
-      "completed": false
-    },
-    {
-      "id": "8ab4",
-      "columnId": "8f01",
-      "title": "ophe",
-      "completed": true
-    },
-    {
-      "id": "23a3",
-      "title": "zood",
-      "columnId": "8f01",
-      "completed": false
-    },
-    {
-      "id": "53dc",
-      "columnId": "3a17",
-      "title": "roie",
-      "completed": false
-    }
-  ],
+  "columns": [],
+  "cards": [],
   "notes": [
     {
-      "id": "a993",
-      "htmlText": "<h1><em>Obede123</em></h1><p><code>Titulo012jg</code></p><img src=\"https://upload.wikimedia.org/wikipedia/commons/6/6a/JavaScript-logo.png\"><p>otpnnnfufn</p>",
-      "createdAt": "2025-11-04T23:18:39.453Z"
+      "id": "21bc",
+      "htmlText": "<h1>Obede</h1><p></p>",
+      "createdAt": "2025-11-05T17:15:50.534Z"
+    },
+    {
+      "id": "d899",
+      "htmlText": "<h1>kdiididie</h1><p></p>",
+      "createdAt": "2025-11-05T18:08:44.966Z"
     }
   ]
 }

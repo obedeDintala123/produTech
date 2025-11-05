@@ -12,7 +12,9 @@ import { ToolBar } from "./tool-bar";
 import { Placeholder } from "@tiptap/extensions";
 
 import "@/components/tiptap-node/image-node/image-node.scss";
-import { useRouterState } from "@tanstack/react-router";
+import { useRouter, useRouterState } from "@tanstack/react-router";
+import { Button } from "./ui/button";
+import { ArrowLeft } from "lucide-react";
 
 const Tiptap = ({
   content,
@@ -26,7 +28,8 @@ const Tiptap = ({
   ref?: any;
 }) => {
   const pathname = useRouterState().location.pathname;
- 
+  const router = useRouter();
+
   const editor = useEditor({
     extensions: [
       StarterKit.configure(),
@@ -63,7 +66,8 @@ const Tiptap = ({
 
     editorProps: {
       attributes: {
-        class: "min-h-[156px] rounded-md bg-slate-50 dark:bg-[#1F1F21] py-2 px-3 max-w-4xl whitespace-break-spaces",
+        class:
+          "min-h-[156px] rounded-md bg-slate-50 dark:bg-[#1F1F21] py-2 px-3 max-w-4xl whitespace-break-spaces",
       },
     },
   });
@@ -74,12 +78,30 @@ const Tiptap = ({
 
   return (
     <div>
-      <ToolBar className="mb-1 bg-slate-50 dark:bg-background space-x-1 sticky top-0 p-4" editor={editor} />
-      <div className={`${!pathname.endsWith("/notes") ? "mt-10 m-auto w-[60%]": ""}`}>
+      <ToolBar editor={editor} />
+      <div
+        className={`${!pathname.endsWith("/notes") ? "mt-10 m-auto w-[90%] md:w-[60%]" : ""}`}
+      >
         <EditorContent editor={editor} ref={ref} />
         {formMessage && (
           <p className="text-sm text-red-500 mt-1">{formMessage}</p>
         )}
+
+        <div className="mt-4 md:hidden flex items-center justify-between">
+          <Button
+            onClick={() => router.navigate({ to: "/dashboard/notes" })}
+            className="w-10 h-10 rounded-md bg-gray-100 hover:bg-gray-100 dark:bg-[#1F1F21]"
+          >
+            <ArrowLeft className="text-produ-text" />
+          </Button>
+
+          <Button
+            className="bg-produ-secondary hover:bg-produ-secondary"
+            type="submit"
+          >
+            Salvar
+          </Button>
+        </div>
       </div>
     </div>
   );

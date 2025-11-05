@@ -27,7 +27,7 @@ export type BoardType = {
   id: string;
   title: string;
   visibility: string;
-  background: string;
+  background?: string;
   createdAt?: string;
   updatedAt?: string;
 };

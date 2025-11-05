@@ -19,6 +19,8 @@ import { useForm, Controller } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import { api } from "@/lib/api";
 import { toast } from "sonner";
+import { useRecentActivityStore } from "@/store/dash-states";
+import { recentActivity } from "@/lib/utils";
 
 export const Route = createFileRoute("/dashboard/boards/create")({
   component: CreateBoardComponent,
@@ -34,6 +36,7 @@ type BoardSchema = z.infer<typeof boardSchema>;
 
 function CreateBoardComponent() {
   const { data: images, isLoading } = useImages();
+  const { setRecentBoards, recentBoards } = useRecentActivityStore();
   const router = useRouter();
   const {
     register,
@@ -65,6 +68,12 @@ function CreateBoardComponent() {
     mutationKey: ["createBoard"],
     mutationFn: async (data: BoardSchema) => {
       await api.post("/boards", { ...data, createdAt: new Date(), column: [] });
+      setRecentBoards(
+        recentActivity([
+          ...recentBoards,
+          { ...data, createdAt: new Date(), column: [] },
+        ])
+      );
     },
 
     onSuccess: () => {
@@ -101,19 +110,22 @@ function CreateBoardComponent() {
           Salvar
         </Button>
       </header>
-
-      <main className=" min-h-screen grid grid-cols-5 p-4 pt-24 gap-4">
+      <main
+        className="min-h-screen p-4 pt-24 grid gap-4
+                 grid-cols-1 md:grid-cols-5"
+      >
         {isLoading ? (
           <>
-            <Skeleton className="col-span-2" />
-            <Skeleton className="col-span-3" />
+            <Skeleton className="col-span-1 md:col-span-2 h-64" />
+            <Skeleton className="col-span-1 md:col-span-3 h-64" />
           </>
         ) : (
           <>
-            <Card className="shadow-none col-span-2 p-4">
+      
+            <Card className="shadow-none col-span-1 md:col-span-2 p-4">
               <CardHeader>
                 <CardTitle className="font-none">Tela de Fundo</CardTitle>
-                <div className="grid grid-cols-6 gap-2">
+                <div className="grid grid-cols-3 sm:grid-cols-6 gap-2 mt-2">
                   {images?.map((img: any) => (
                     <img
                       key={img.id}
@@ -129,7 +141,7 @@ function CreateBoardComponent() {
                   ))}
                 </div>
 
-                <div className="grid grid-cols-6 gap-2 mt-4">
+                <div className="grid grid-cols-3 sm:grid-cols-6 gap-2 mt-4">
                   {backColours.map((colour) => (
                     <div
                       key={colour}
@@ -158,7 +170,6 @@ function CreateBoardComponent() {
 
                 <div className="space-y-2">
                   <Label>Visibilidade</Label>
-
                   <Controller
                     control={control}
                     name="visibility"
@@ -168,7 +179,7 @@ function CreateBoardComponent() {
                         value={field.value}
                         onValueChange={field.onChange}
                       >
-                        <SelectTrigger className="data-[size=default]:h-12 w-full">
+                        <SelectTrigger className="h-12 w-full">
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
@@ -186,8 +197,9 @@ function CreateBoardComponent() {
                 </div>
               </CardContent>
             </Card>
+
             <Card
-              className="flex items-center justify-center shadow-none col-span-3 relative overflow-hidden"
+              className="flex items-center justify-center shadow-none col-span-1 md:col-span-3 relative overflow-hidden min-h-[300px]"
               style={{
                 backgroundImage: background?.startsWith("http")
                   ? `url(${background})`
@@ -203,7 +215,7 @@ function CreateBoardComponent() {
               <img
                 src="/preview.svg"
                 alt="preview"
-                className="w-[650px] z-10"
+                className="w-full max-w-[250px] md:max-w-[650px] z-10"
               />
             </Card>
           </>

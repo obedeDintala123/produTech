@@ -35,3 +35,11 @@ export function parseNoteHTML(htmlText: string) {
 
   return { title, preview, hasImage, hasList };
 }
+
+
+export function recentActivity(data: any[]) {
+  return data
+    .slice() // copia o array original
+    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()) // do mais recente para o mais antigo
+    .slice(0, 3); // pega apenas os 3 primeiros
+}
